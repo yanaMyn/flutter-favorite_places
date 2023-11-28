@@ -1,16 +1,28 @@
+import 'package:favorite_places/providers/user_place.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class AddPlacesScreen extends StatefulWidget {
+class AddPlacesScreen extends ConsumerStatefulWidget {
   const AddPlacesScreen({super.key});
 
   @override
-  State<StatefulWidget> createState() {
+  ConsumerState<AddPlacesScreen> createState() {
     return _AddPlacesScreenState();
   }
 }
 
-class _AddPlacesScreenState extends State<AddPlacesScreen> {
+class _AddPlacesScreenState extends ConsumerState<AddPlacesScreen> {
   final _titleController = TextEditingController();
+
+  void _saveItem() {
+    final textTitle = _titleController.text;
+    if (textTitle.isEmpty) {
+      return;
+    }
+
+    ref.read(userPlaceProvider.notifier).addPlace(textTitle);
+    Navigator.of(context).pop();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,14 +35,21 @@ class _AddPlacesScreenState extends State<AddPlacesScreen> {
         child: Column(
           children: [
             TextField(
-              decoration: const InputDecoration(
-                label: Text("Title"),
+              decoration: InputDecoration(
+                label: Text(
+                  "Title",
+                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                        color: Theme.of(context).colorScheme.onBackground,
+                      ),
+                ),
               ),
               controller: _titleController,
             ),
             const SizedBox(height: 16),
             ElevatedButton.icon(
-              onPressed: () {},
+              onPressed: () {
+                _saveItem();
+              },
               icon: const Icon(Icons.add),
               label: const Text("Add Place"),
             ),
