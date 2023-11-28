@@ -28,6 +28,10 @@ class PlaceList extends StatelessWidget {
             ),
           );
         },
+        leading: CircleAvatar(
+          radius: 26,
+          backgroundImage: FileImage(placeItems[index].image),
+        ),
         title: Text(placeItems[index].title,
             style: Theme.of(context).textTheme.titleMedium!.copyWith(
                   color: Theme.of(context).colorScheme.onBackground,
